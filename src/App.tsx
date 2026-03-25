@@ -1048,7 +1048,7 @@ export default function App() {
         {/* --- Main Table --- */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-[11px] md:text-sm">
+            <table className="min-w-full border-collapse text-[11px] md:text-sm">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
                   <th className="p-2 md:p-4 text-left font-bold text-gray-700 sticky left-0 bg-gray-50 z-10 w-24 md:w-32 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">Phòng</th>
@@ -1062,18 +1062,18 @@ export default function App() {
                 </tr>
                 <tr className="bg-gray-50 border-b border-gray-200 text-[9px] md:text-[10px] uppercase tracking-wider text-gray-500">
                   <th className="p-1 md:p-2 sticky left-0 bg-gray-50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]"></th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Cũ</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Mới</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-10 md:w-16">Dùng</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-16 md:w-24">Tiền</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Cũ</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Mới</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-10 md:w-16">Dùng</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-16 md:w-24">Tiền</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-16 md:w-24">Phòng</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Rác</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Net</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Nợ</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Cũ</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Mới</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[40px] md:w-16 whitespace-nowrap">Dùng</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[70px] md:w-28 whitespace-nowrap">Tiền</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Cũ</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Mới</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[40px] md:w-16 whitespace-nowrap">Dùng</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[70px] md:w-28 whitespace-nowrap">Tiền</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[80px] md:w-32 whitespace-nowrap">Phòng</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Rác</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Net</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Nợ</th>
                   <th className="p-1 md:p-2 border-x border-gray-100"></th>
                   <th className="p-1 md:p-2 border-x border-gray-100"></th>
                   <th className="p-1 md:p-2 border-x border-gray-100">Họ tên</th>
@@ -1097,89 +1097,89 @@ export default function App() {
                       </td>
                       
                       {/* Điện */}
-                      <td className="p-0.5 md:p-1 border-x border-gray-100">
+                      <td className="p-0.5 border-x border-gray-100 min-w-[60px]">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.elecOld)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'elecOld', parseSafeNumber(e.target.value))}
-                          className="w-full p-1.5 md:p-2 bg-transparent text-center focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none rounded transition-all"
+                          className="w-full p-1 md:p-2 bg-transparent text-center focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none rounded transition-all text-[10px] md:text-sm"
                         />
                       </td>
-                      <td className="p-0.5 md:p-1 border-x border-gray-100">
+                      <td className="p-0.5 border-x border-gray-100 min-w-[60px]">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.elecNew)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'elecNew', parseSafeNumber(e.target.value))}
-                          className="w-full p-1.5 md:p-2 bg-transparent text-center font-semibold focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none rounded transition-all"
+                          className="w-full p-1 md:p-2 bg-transparent text-center font-semibold focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none rounded transition-all text-[10px] md:text-sm"
                         />
                       </td>
-                      <td className="p-1 md:p-2 text-center text-blue-600 font-medium border-x border-gray-100 bg-blue-50/20">
+                      <td className="p-1 md:p-2 text-center text-blue-600 font-medium border-x border-gray-100 bg-blue-50/20 text-[10px] md:text-sm whitespace-nowrap">
                         {elecUsage}
                       </td>
-                      <td className="p-1 md:p-2 text-right text-blue-700 font-bold border-x border-gray-100 bg-blue-50/40">
+                      <td className="p-1 md:p-2 text-right text-blue-700 font-bold border-x border-gray-100 bg-blue-50/40 text-[10px] md:text-sm whitespace-nowrap">
                         {formatCurrency(elecUsage * record.elecPrice).replace('₫', '')}
                       </td>
 
                       {/* Nước */}
-                      <td className="p-0.5 md:p-1 border-x border-gray-100">
+                      <td className="p-0.5 border-x border-gray-100 min-w-[60px]">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.waterOld)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'waterOld', parseSafeNumber(e.target.value))}
-                          className="w-full p-1.5 md:p-2 bg-transparent text-center focus:bg-white focus:ring-1 focus:ring-cyan-400 outline-none rounded transition-all"
+                          className="w-full p-1 md:p-2 bg-transparent text-center focus:bg-white focus:ring-1 focus:ring-cyan-400 outline-none rounded transition-all text-[10px] md:text-sm"
                         />
                       </td>
-                      <td className="p-0.5 md:p-1 border-x border-gray-100">
+                      <td className="p-0.5 border-x border-gray-100 min-w-[60px]">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.waterNew)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'waterNew', parseSafeNumber(e.target.value))}
-                          className="w-full p-1.5 md:p-2 bg-transparent text-center font-semibold focus:bg-white focus:ring-1 focus:ring-cyan-400 outline-none rounded transition-all"
+                          className="w-full p-1 md:p-2 bg-transparent text-center font-semibold focus:bg-white focus:ring-1 focus:ring-cyan-400 outline-none rounded transition-all text-[10px] md:text-sm"
                         />
                       </td>
-                      <td className="p-1 md:p-2 text-center text-cyan-600 font-medium border-x border-gray-100 bg-cyan-50/20">
+                      <td className="p-1 md:p-2 text-center text-cyan-600 font-medium border-x border-gray-100 bg-cyan-50/20 text-[10px] md:text-sm whitespace-nowrap">
                         {waterUsage}
                       </td>
-                      <td className="p-1 md:p-2 text-right text-cyan-700 font-bold border-x border-gray-100 bg-cyan-50/40">
+                      <td className="p-1 md:p-2 text-right text-cyan-700 font-bold border-x border-gray-100 bg-cyan-50/40 text-[10px] md:text-sm whitespace-nowrap">
                         {formatCurrency(waterUsage * record.waterPrice).replace('₫', '')}
                       </td>
 
                       {/* Chi phí */}
-                      <td className="p-0.5 md:p-1 border-x border-gray-100">
+                      <td className="p-0.5 border-x border-gray-100 min-w-[80px]">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.rent)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'rent', parseSafeNumber(e.target.value))}
-                          className="w-full p-1.5 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all"
+                          className="w-full p-1 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all text-[10px] md:text-sm"
                         />
                       </td>
-                      <td className="p-0.5 md:p-1 border-x border-gray-100">
+                      <td className="p-0.5 border-x border-gray-100 min-w-[60px]">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.trash)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'trash', parseSafeNumber(e.target.value))}
-                          className="w-full p-1.5 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all"
+                          className="w-full p-1 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all text-[10px] md:text-sm"
                         />
                       </td>
-                      <td className="p-0.5 md:p-1 border-x border-gray-100">
+                      <td className="p-0.5 border-x border-gray-100 min-w-[60px]">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.internet)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'internet', parseSafeNumber(e.target.value))}
-                          className="w-full p-1.5 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all"
+                          className="w-full p-1 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all text-[10px] md:text-sm"
                         />
                       </td>
-                      <td className="p-0.5 md:p-1 border-x border-gray-100">
+                      <td className="p-0.5 border-x border-gray-100 min-w-[60px]">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.debt)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'debt', parseSafeNumber(e.target.value))}
-                          className="w-full p-1.5 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all text-red-500"
+                          className="w-full p-1 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all text-red-500 text-[10px] md:text-sm"
                         />
                       </td>
 
                       {/* Tổng */}
-                      <td className="p-2 md:p-4 text-right font-bold text-purple-700 bg-purple-50/20 border-x border-gray-100">
+                      <td className="p-2 md:p-4 text-right font-bold text-purple-700 bg-purple-50/20 border-x border-gray-100 text-[10px] md:text-sm whitespace-nowrap">
                         {formatCurrency(total).replace('₫', '')}
                       </td>
 
