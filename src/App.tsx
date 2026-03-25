@@ -858,46 +858,46 @@ export default function App() {
     <div className="min-h-screen bg-[#F5F5F7] text-[#1D1D1F] font-sans selection:bg-blue-100">
       {/* --- Sidebar / Header --- */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
-        <div className="max-w-[1600px] mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-sm">
+        <div className="max-w-[1600px] mx-auto px-4 md:px-6 py-3 md:h-16 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-sm shrink-0">
               <Home size={24} />
             </div>
-            <div>
+            <div className="flex-1">
               <h1 className="font-bold text-lg leading-tight">Trần Phương Thái</h1>
-              <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Hệ thống quản lý thông minh</p>
+              <p className="text-[10px] md:text-xs text-gray-500 font-medium uppercase tracking-wider">Hệ thống quản lý thông minh</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100">
-              <span className="text-[10px] font-bold text-blue-600 uppercase">Giá Điện</span>
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 md:gap-4 w-full md:w-auto">
+            <div className="flex items-center gap-2 bg-blue-50 px-2 md:px-3 py-1.5 rounded-lg border border-blue-100">
+              <span className="text-[9px] md:text-[10px] font-bold text-blue-600 uppercase">Điện</span>
               <input 
                 type="text" 
                 value={formatNumberForInput(globalElecPrice)} 
                 onChange={(e) => handleUpdateGlobalPrice('elec', parseSafeNumber(e.target.value))}
-                className="w-16 bg-transparent font-bold text-blue-700 outline-none text-sm"
+                className="w-12 md:w-16 bg-transparent font-bold text-blue-700 outline-none text-xs md:text-sm"
               />
-              <span className="text-[10px] text-blue-400">đ/kWh</span>
+              <span className="text-[9px] md:text-[10px] text-blue-400">đ</span>
             </div>
-            <div className="flex items-center gap-2 bg-cyan-50 px-3 py-1.5 rounded-lg border border-cyan-100">
-              <span className="text-[10px] font-bold text-cyan-600 uppercase">Giá Nước</span>
+            <div className="flex items-center gap-2 bg-cyan-50 px-2 md:px-3 py-1.5 rounded-lg border border-cyan-100">
+              <span className="text-[9px] md:text-[10px] font-bold text-cyan-600 uppercase">Nước</span>
               <input 
                 type="text" 
                 value={formatNumberForInput(globalWaterPrice)} 
                 onChange={(e) => handleUpdateGlobalPrice('water', parseSafeNumber(e.target.value))}
-                className="w-16 bg-transparent font-bold text-cyan-700 outline-none text-sm"
+                className="w-12 md:w-16 bg-transparent font-bold text-cyan-700 outline-none text-xs md:text-sm"
               />
-              <span className="text-[10px] text-cyan-400">đ/m³</span>
+              <span className="text-[9px] md:text-[10px] text-cyan-400">đ</span>
             </div>
 
             <button 
               onClick={handleSyncFromPreviousMonth}
-              className="flex items-center gap-2 text-blue-600 px-3 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors border border-blue-100"
+              className="flex items-center gap-2 text-blue-600 px-3 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors border border-blue-100 text-xs md:text-sm"
               title="Đồng bộ chỉ số từ tháng trước"
             >
-              <RefreshCcw size={18} />
-              Đồng bộ tháng trước
+              <RefreshCcw size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="hidden sm:inline">Đồng bộ</span>
             </button>
 
             <button 
@@ -913,36 +913,36 @@ export default function App() {
                     : h
                 ));
               }}
-              className="flex items-center gap-2 text-emerald-600 px-3 py-2 rounded-lg font-medium hover:bg-emerald-50 transition-colors border border-emerald-100"
+              className="flex items-center gap-2 text-emerald-600 px-3 py-2 rounded-lg font-medium hover:bg-emerald-50 transition-colors border border-emerald-100 text-xs md:text-sm"
               title="Đánh dấu tất cả phòng đã thanh toán"
             >
-              <DollarSign size={18} />
-              Đã thanh toán tất cả
+              <DollarSign size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="hidden sm:inline">Tất cả đã trả</span>
             </button>
 
             <div className="flex items-center bg-gray-100 rounded-lg p-1">
               <button 
                 onClick={() => navigateMonth('prev')}
-                className="p-1.5 hover:bg-white hover:shadow-sm rounded-md transition-all"
+                className="p-1 md:p-1.5 hover:bg-white hover:shadow-sm rounded-md transition-all"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={18} className="md:w-5 md:h-5" />
               </button>
-              <div className="px-4 py-1 flex items-center gap-2 font-semibold min-w-[140px] justify-center">
-                <Calendar size={16} className="text-blue-600" />
+              <div className="px-2 md:px-4 py-1 flex items-center gap-1 md:gap-2 font-semibold min-w-[100px] md:min-w-[140px] justify-center text-xs md:text-sm">
+                <Calendar size={14} className="text-blue-600 md:w-4 md:h-4" />
                 {getMonthYearString(currentMonth, currentYear)}
               </div>
               <button 
                 onClick={() => navigateMonth('next')}
-                className="p-1.5 hover:bg-white hover:shadow-sm rounded-md transition-all"
+                className="p-1 md:p-1.5 hover:bg-white hover:shadow-sm rounded-md transition-all"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={18} className="md:w-5 md:h-5" />
               </button>
             </div>
 
             <button 
               onClick={handleSaveAll}
               disabled={isSaving || !isSupabaseConfigured}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all shadow-sm ${
+              className={`flex items-center gap-2 px-3 md:px-4 py-2 rounded-lg font-medium transition-all shadow-sm text-xs md:text-sm ${
                 saveStatus === 'success' 
                   ? 'bg-green-600 text-white' 
                   : saveStatus === 'error'
@@ -951,13 +951,11 @@ export default function App() {
               } disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {isSaving ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              ) : saveStatus === 'success' ? (
-                <Save size={18} />
+                <div className="w-3 h-3 md:w-4 md:h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               ) : (
-                <Save size={18} />
+                <Save size={16} className="md:w-[18px] md:h-[18px]" />
               )}
-              {saveStatus === 'success' ? 'Đã lưu' : saveStatus === 'error' ? 'Lỗi!' : 'Cập nhật'}
+              <span>{saveStatus === 'success' ? 'Đã lưu' : saveStatus === 'error' ? 'Lỗi!' : 'Lưu'}</span>
             </button>
 
             <button 
@@ -965,16 +963,16 @@ export default function App() {
                 setEditingRoom(null);
                 setIsRoomModalOpen(true);
               }}
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm"
+              className="flex items-center gap-2 bg-blue-600 text-white px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm text-xs md:text-sm"
             >
-              <Plus size={18} />
-              Thêm Phòng
+              <Plus size={16} className="md:w-[18px] md:h-[18px]" />
+              <span>Thêm</span>
             </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-[1600px] mx-auto px-6 py-8">
+      <main className="max-w-[1600px] mx-auto px-4 md:px-6 py-6 md:py-8">
         {!isSupabaseConfigured && (
           <div className="mb-8 bg-amber-50 border border-amber-200 rounded-2xl p-6 flex items-start gap-4 shadow-sm">
             <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center shrink-0">
@@ -1050,36 +1048,36 @@ export default function App() {
         {/* --- Main Table --- */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-sm">
+            <table className="w-full border-collapse text-[11px] md:text-sm">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="p-4 text-left font-bold text-gray-700 sticky left-0 bg-gray-50 z-10 w-32">Phòng</th>
-                  <th colSpan={4} className="p-2 text-center font-bold text-blue-700 bg-blue-50/50 border-x border-gray-200">Điện (Số)</th>
-                  <th colSpan={4} className="p-2 text-center font-bold text-cyan-700 bg-cyan-50/50 border-x border-gray-200">Nước (Số)</th>
-                  <th colSpan={4} className="p-2 text-center font-bold text-emerald-700 bg-emerald-50/50 border-x border-gray-200">Chi phí cố định</th>
-                  <th className="p-4 text-right font-bold text-purple-700 bg-purple-50/50 border-x border-gray-200">Tổng cộng</th>
-                  <th className="p-4 text-center font-bold text-gray-700 border-x border-gray-200">Trạng thái</th>
-                  <th className="p-4 text-left font-bold text-gray-700">Người thuê</th>
-                  <th className="p-4 text-center font-bold text-gray-700">Thao tác</th>
+                  <th className="p-2 md:p-4 text-left font-bold text-gray-700 sticky left-0 bg-gray-50 z-10 w-24 md:w-32 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">Phòng</th>
+                  <th colSpan={4} className="p-1 md:p-2 text-center font-bold text-blue-700 bg-blue-50/50 border-x border-gray-200">Điện</th>
+                  <th colSpan={4} className="p-1 md:p-2 text-center font-bold text-cyan-700 bg-cyan-50/50 border-x border-gray-200">Nước</th>
+                  <th colSpan={4} className="p-1 md:p-2 text-center font-bold text-emerald-700 bg-emerald-50/50 border-x border-gray-200">Cố định</th>
+                  <th className="p-2 md:p-4 text-right font-bold text-purple-700 bg-purple-50/50 border-x border-gray-200">Tổng</th>
+                  <th className="p-2 md:p-4 text-center font-bold text-gray-700 border-x border-gray-200">T.Thái</th>
+                  <th className="p-2 md:p-4 text-left font-bold text-gray-700">Khách</th>
+                  <th className="p-2 md:p-4 text-center font-bold text-gray-700">#</th>
                 </tr>
-                <tr className="bg-gray-50 border-b border-gray-200 text-[10px] uppercase tracking-wider text-gray-500">
-                  <th className="p-2 sticky left-0 bg-gray-50 z-10"></th>
-                  <th className="p-2 border-x border-gray-100 w-20">Cũ</th>
-                  <th className="p-2 border-x border-gray-100 w-20">Mới</th>
-                  <th className="p-2 border-x border-gray-100 w-16">Dùng</th>
-                  <th className="p-2 border-x border-gray-100 w-24">Tiền điện</th>
-                  <th className="p-2 border-x border-gray-100 w-20">Cũ</th>
-                  <th className="p-2 border-x border-gray-100 w-20">Mới</th>
-                  <th className="p-2 border-x border-gray-100 w-16">Dùng</th>
-                  <th className="p-2 border-x border-gray-100 w-24">Tiền nước</th>
-                  <th className="p-2 border-x border-gray-100 w-24">Phòng</th>
-                  <th className="p-2 border-x border-gray-100 w-20">Rác</th>
-                  <th className="p-2 border-x border-gray-100 w-20">Net</th>
-                  <th className="p-2 border-x border-gray-100 w-20">Nợ</th>
-                  <th className="p-2 border-x border-gray-100"></th>
-                  <th className="p-2 border-x border-gray-100"></th>
-                  <th className="p-2 border-x border-gray-100">Họ tên / SĐT</th>
-                  <th className="p-2"></th>
+                <tr className="bg-gray-50 border-b border-gray-200 text-[9px] md:text-[10px] uppercase tracking-wider text-gray-500">
+                  <th className="p-1 md:p-2 sticky left-0 bg-gray-50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]"></th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Cũ</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Mới</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-10 md:w-16">Dùng</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-16 md:w-24">Tiền</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Cũ</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Mới</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-10 md:w-16">Dùng</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-16 md:w-24">Tiền</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-16 md:w-24">Phòng</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Rác</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Net</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100 w-14 md:w-20">Nợ</th>
+                  <th className="p-1 md:p-2 border-x border-gray-100"></th>
+                  <th className="p-1 md:p-2 border-x border-gray-100"></th>
+                  <th className="p-1 md:p-2 border-x border-gray-100">Họ tên</th>
+                  <th className="p-1 md:p-2"></th>
                 </tr>
               </thead>
               <tbody>
@@ -1091,150 +1089,150 @@ export default function App() {
 
                   return (
                     <tr key={room.id} className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors group">
-                      <td className="p-4 font-bold sticky left-0 bg-white group-hover:bg-gray-50/50 z-10 border-r border-gray-100">
+                      <td className="p-2 md:p-4 font-bold sticky left-0 bg-white group-hover:bg-gray-50/50 z-10 border-r border-gray-100 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
                         <div className="flex flex-col">
-                          <span>{room.name}</span>
-                          {!room.isOccupied && <span className="text-[10px] text-orange-500 font-normal">Trống</span>}
+                          <span className="truncate">{room.name}</span>
+                          {!room.isOccupied && <span className="text-[9px] md:text-[10px] text-orange-500 font-normal">Trống</span>}
                         </div>
                       </td>
                       
                       {/* Điện */}
-                      <td className="p-1 border-x border-gray-100">
+                      <td className="p-0.5 md:p-1 border-x border-gray-100">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.elecOld)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'elecOld', parseSafeNumber(e.target.value))}
-                          className="w-full p-2 bg-transparent text-center focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none rounded transition-all"
+                          className="w-full p-1.5 md:p-2 bg-transparent text-center focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none rounded transition-all"
                         />
                       </td>
-                      <td className="p-1 border-x border-gray-100">
+                      <td className="p-0.5 md:p-1 border-x border-gray-100">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.elecNew)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'elecNew', parseSafeNumber(e.target.value))}
-                          className="w-full p-2 bg-transparent text-center font-semibold focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none rounded transition-all"
+                          className="w-full p-1.5 md:p-2 bg-transparent text-center font-semibold focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none rounded transition-all"
                         />
                       </td>
-                      <td className="p-2 text-center text-blue-600 font-medium border-x border-gray-100 bg-blue-50/20">
+                      <td className="p-1 md:p-2 text-center text-blue-600 font-medium border-x border-gray-100 bg-blue-50/20">
                         {elecUsage}
                       </td>
-                      <td className="p-2 text-right text-blue-700 font-bold border-x border-gray-100 bg-blue-50/40">
-                        {formatCurrency(elecUsage * record.elecPrice)}
+                      <td className="p-1 md:p-2 text-right text-blue-700 font-bold border-x border-gray-100 bg-blue-50/40">
+                        {formatCurrency(elecUsage * record.elecPrice).replace('₫', '')}
                       </td>
 
                       {/* Nước */}
-                      <td className="p-1 border-x border-gray-100">
+                      <td className="p-0.5 md:p-1 border-x border-gray-100">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.waterOld)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'waterOld', parseSafeNumber(e.target.value))}
-                          className="w-full p-2 bg-transparent text-center focus:bg-white focus:ring-1 focus:ring-cyan-400 outline-none rounded transition-all"
+                          className="w-full p-1.5 md:p-2 bg-transparent text-center focus:bg-white focus:ring-1 focus:ring-cyan-400 outline-none rounded transition-all"
                         />
                       </td>
-                      <td className="p-1 border-x border-gray-100">
+                      <td className="p-0.5 md:p-1 border-x border-gray-100">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.waterNew)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'waterNew', parseSafeNumber(e.target.value))}
-                          className="w-full p-2 bg-transparent text-center font-semibold focus:bg-white focus:ring-1 focus:ring-cyan-400 outline-none rounded transition-all"
+                          className="w-full p-1.5 md:p-2 bg-transparent text-center font-semibold focus:bg-white focus:ring-1 focus:ring-cyan-400 outline-none rounded transition-all"
                         />
                       </td>
-                      <td className="p-2 text-center text-cyan-600 font-medium border-x border-gray-100 bg-cyan-50/20">
+                      <td className="p-1 md:p-2 text-center text-cyan-600 font-medium border-x border-gray-100 bg-cyan-50/20">
                         {waterUsage}
                       </td>
-                      <td className="p-2 text-right text-cyan-700 font-bold border-x border-gray-100 bg-cyan-50/40">
-                        {formatCurrency(waterUsage * record.waterPrice)}
+                      <td className="p-1 md:p-2 text-right text-cyan-700 font-bold border-x border-gray-100 bg-cyan-50/40">
+                        {formatCurrency(waterUsage * record.waterPrice).replace('₫', '')}
                       </td>
 
                       {/* Chi phí */}
-                      <td className="p-1 border-x border-gray-100">
+                      <td className="p-0.5 md:p-1 border-x border-gray-100">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.rent)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'rent', parseSafeNumber(e.target.value))}
-                          className="w-full p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all"
+                          className="w-full p-1.5 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all"
                         />
                       </td>
-                      <td className="p-1 border-x border-gray-100">
+                      <td className="p-0.5 md:p-1 border-x border-gray-100">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.trash)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'trash', parseSafeNumber(e.target.value))}
-                          className="w-full p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all"
+                          className="w-full p-1.5 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all"
                         />
                       </td>
-                      <td className="p-1 border-x border-gray-100">
+                      <td className="p-0.5 md:p-1 border-x border-gray-100">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.internet)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'internet', parseSafeNumber(e.target.value))}
-                          className="w-full p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all"
+                          className="w-full p-1.5 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all"
                         />
                       </td>
-                      <td className="p-1 border-x border-gray-100">
+                      <td className="p-0.5 md:p-1 border-x border-gray-100">
                         <input 
                           type="text" 
                           value={formatNumberForInput(record.debt)} 
                           onChange={(e) => handleUpdateRecord(room.id, 'debt', parseSafeNumber(e.target.value))}
-                          className="w-full p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all text-red-500"
+                          className="w-full p-1.5 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all text-red-500"
                         />
                       </td>
 
                       {/* Tổng */}
-                      <td className="p-4 text-right font-bold text-purple-700 bg-purple-50/20 border-x border-gray-100">
-                        {formatCurrency(total)}
+                      <td className="p-2 md:p-4 text-right font-bold text-purple-700 bg-purple-50/20 border-x border-gray-100">
+                        {formatCurrency(total).replace('₫', '')}
                       </td>
 
-                      <td className="p-4 text-center border-x border-gray-100">
+                      <td className="p-2 md:p-4 text-center border-x border-gray-100">
                         <button
                           onClick={() => handleUpdateRecord(room.id, 'isPaid', !record.isPaid)}
-                          className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all ${
+                          className={`px-2 md:px-3 py-1 rounded-full text-[8px] md:text-[10px] font-bold uppercase tracking-wider transition-all ${
                             record.isPaid 
                               ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' 
                               : 'bg-red-100 text-red-700 border border-red-200'
                           }`}
                         >
-                          {record.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                          {record.isPaid ? 'X' : '!'}
                         </button>
                       </td>
 
                       {/* Thông tin */}
-                      <td className="p-4 border-x border-gray-100 max-w-[200px]">
+                      <td className="p-2 md:p-4 border-x border-gray-100 max-w-[120px] md:max-w-[200px]">
                         <div className="flex flex-col truncate">
-                          <span className="font-medium">{room.tenantName || '---'}</span>
-                          <span className="text-xs text-gray-500">{room.tenantPhone || '---'}</span>
+                          <span className="font-medium truncate">{room.tenantName || '---'}</span>
+                          <span className="text-[10px] md:text-xs text-gray-500">{room.tenantPhone || '---'}</span>
                         </div>
                       </td>
 
                       {/* Actions */}
-                      <td className="p-4 text-center">
-                        <div className="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <td className="p-2 md:p-4 text-center">
+                        <div className="flex items-center justify-center gap-1 md:gap-2 md:opacity-0 group-hover:opacity-100 transition-opacity">
                           <button 
                             onClick={() => {
                               setSelectedRoomId(room.id);
                               setIsInvoiceModalOpen(true);
                             }}
-                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all hover:scale-110"
+                            className="p-1.5 md:p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all hover:scale-110"
                             title="In hóa đơn"
                           >
-                            <Printer size={18} />
+                            <Printer size={16} className="md:w-[18px] md:h-[18px]" />
                           </button>
                           <button 
                             onClick={() => {
                               setEditingRoom({ ...room });
                               setIsRoomModalOpen(true);
                             }}
-                            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all hover:scale-110"
+                            className="p-1.5 md:p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all hover:scale-110"
                             title="Sửa phòng"
                           >
-                            <Edit2 size={18} />
+                            <Edit2 size={16} className="md:w-[18px] md:h-[18px]" />
                           </button>
                           <button 
                             onClick={() => handleDeleteRoom(room.id)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all hover:scale-110"
+                            className="p-1.5 md:p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all hover:scale-110"
                             title="Xóa phòng"
                           >
-                            <Trash2 size={18} />
+                            <Trash2 size={16} className="md:w-[18px] md:h-[18px]" />
                           </button>
                         </div>
                       </td>
@@ -1244,9 +1242,9 @@ export default function App() {
               </tbody>
               <tfoot>
                 <tr className="bg-gray-50 font-bold border-t-2 border-gray-200">
-                  <td className="p-4 sticky left-0 bg-gray-50 z-10">TỔNG CỘNG</td>
-                  <td colSpan={12} className="p-4 text-right text-gray-500">Doanh thu tháng này:</td>
-                  <td className="p-4 text-right text-purple-700 text-lg">{formatCurrency(stats.totalRevenue)}</td>
+                  <td className="p-2 md:p-4 sticky left-0 bg-gray-50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">TỔNG</td>
+                  <td colSpan={12} className="p-2 md:p-4 text-right text-gray-500 text-[10px] md:text-sm">Doanh thu tháng này:</td>
+                  <td className="p-2 md:p-4 text-right text-purple-700 text-sm md:text-lg">{formatCurrency(stats.totalRevenue)}</td>
                   <td colSpan={2}></td>
                 </tr>
               </tfoot>
@@ -1272,7 +1270,7 @@ export default function App() {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10"
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10 mx-auto"
             >
               <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
                 <h3 className="font-bold text-lg">{editingRoom?.id ? 'Chỉnh sửa phòng' : 'Thêm phòng mới'}</h3>
@@ -1483,23 +1481,23 @@ export default function App() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden relative z-10"
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden relative z-10 mx-auto"
             >
-              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between no-print">
+              <div className="px-4 md:px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4 no-print">
                 <h3 className="font-bold text-lg">Xem trước hóa đơn</h3>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center justify-center gap-2">
                   <button 
                     onClick={handleCaptureInvoice}
-                    className="flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors"
+                    className="flex items-center gap-2 bg-emerald-600 text-white px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors text-xs md:text-sm"
                   >
-                    <Camera size={18} />
+                    <Camera size={16} className="md:w-[18px] md:h-[18px]" />
                     Chụp Ảnh
                   </button>
                   <button 
                     onClick={() => window.print()}
-                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                    className="flex items-center gap-2 bg-blue-600 text-white px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors text-xs md:text-sm"
                   >
-                    <Printer size={18} />
+                    <Printer size={16} className="md:w-[18px] md:h-[18px]" />
                     In Hóa Đơn
                   </button>
                   <button onClick={() => setIsInvoiceModalOpen(false)} className="p-1 hover:bg-gray-100 rounded-full transition-colors">
@@ -1507,9 +1505,11 @@ export default function App() {
                   </button>
                 </div>
               </div>
-              <div className="max-h-[80vh] overflow-y-auto bg-gray-50 p-8">
-                <div className="bg-white shadow-lg mx-auto max-w-[21cm] min-h-[29.7cm]">
-                  {renderInvoice()}
+              <div className="max-h-[80vh] overflow-y-auto bg-gray-50 p-4 md:p-8">
+                <div className="bg-white shadow-lg mx-auto w-full max-w-[21cm] overflow-x-auto">
+                  <div className="min-w-[700px]">
+                    {renderInvoice()}
+                  </div>
                 </div>
               </div>
             </motion.div>
