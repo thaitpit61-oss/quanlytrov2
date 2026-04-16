@@ -268,13 +268,23 @@ export default function App() {
     const vacantRooms = totalRooms - occupiedRooms;
     
     let totalRevenue = 0;
+    let totalElec = 0;
+    let totalWater = 0;
+    let totalRent = 0;
+
     if (currentMonthlyData) {
       (Object.values(currentMonthlyData.records) as MonthlyRecord[]).forEach(record => {
+        const elecUsage = Math.max(0, record.elecNew - record.elecOld);
+        const waterUsage = Math.max(0, record.waterNew - record.waterOld);
+        
+        totalElec += elecUsage * record.elecPrice;
+        totalWater += waterUsage * record.waterPrice;
+        totalRent += record.rent;
         totalRevenue += calculateTotal(record);
       });
     }
 
-    return { totalRooms, occupiedRooms, vacantRooms, totalRevenue };
+    return { totalRooms, occupiedRooms, vacantRooms, totalRevenue, totalElec, totalWater, totalRent };
   }, [rooms, currentMonthlyData]);
 
   // Sync global prices with current month's records
@@ -1243,9 +1253,19 @@ export default function App() {
               <tfoot>
                 <tr className="bg-gray-50 font-bold border-t-2 border-gray-200">
                   <td className="p-2 md:p-4 sticky left-0 bg-gray-50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">TỔNG</td>
-                  <td colSpan={12} className="p-2 md:p-4 text-right text-gray-500 text-[10px] md:text-sm">Doanh thu tháng này:</td>
-                  <td className="p-2 md:p-4 text-right text-purple-700 text-sm md:text-lg">{formatCurrency(stats.totalRevenue)}</td>
-                  <td colSpan={2}></td>
+                  <td colSpan={4} className="p-2 md:p-4 text-right text-blue-700 text-[10px] md:text-sm border-x border-gray-100">
+                    {formatCurrency(stats.totalElec).replace('₫', '')}
+                  </td>
+                  <td colSpan={4} className="p-2 md:p-4 text-right text-cyan-700 text-[10px] md:text-sm border-x border-gray-100">
+                    {formatCurrency(stats.totalWater).replace('₫', '')}
+                  </td>
+                  <td colSpan={4} className="p-2 md:p-4 text-right text-emerald-700 text-[10px] md:text-sm border-x border-gray-100">
+                    {formatCurrency(stats.totalRent).replace('₫', '')}
+                  </td>
+                  <td className="p-2 md:p-4 text-right text-purple-700 text-sm md:text-lg bg-purple-50/40">
+                    {formatCurrency(stats.totalRevenue).replace('₫', '')}
+                  </td>
+                  <td colSpan={3}></td>
                 </tr>
               </tfoot>
             </table>
