@@ -690,223 +690,325 @@ export default function App() {
     const total = calculateTotal(record);
 
     return (
-      <div className="p-8 bg-white text-slate-800 font-sans print:p-0" id="invoice-print">
-        {/* Header with Accent */}
-        <div className="flex justify-between items-start mb-10 border-b-4 border-blue-600 pb-6">
-          <div>
-            <h2 className="text-3xl font-black text-blue-600 uppercase tracking-tighter">Hóa Đơn Tiền Phòng</h2>
-            <p className="text-slate-500 font-medium mt-1">{getMonthYearString(currentMonth, currentYear)}</p>
-          </div>
-          <div className="text-right">
-            <div className="bg-blue-600 text-white px-4 py-2 rounded-lg inline-block font-bold mb-2">
-              PHÒNG: {room.name}
+      <div className="bg-white text-slate-800 font-sans" id="invoice-print" style={{fontFamily: "'Segoe UI', system-ui, sans-serif"}}>
+        {/* ===== HEADER GRADIENT BAND ===== */}
+        <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 px-8 py-6 text-white">
+          <div className="flex justify-between items-start">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-1 h-8 bg-white/60 rounded-full"></div>
+                <span className="text-white/70 text-xs font-bold uppercase tracking-[0.2em]">Hóa Đơn Tiền Phòng</span>
+              </div>
+              <h2 className="text-4xl font-black tracking-tight leading-none">
+                {getMonthYearString(currentMonth, currentYear)}
+              </h2>
+              <p className="text-blue-200 text-sm mt-2 font-medium">Ngày phát hành: {new Date().toLocaleDateString('vi-VN', {day:'2-digit', month:'2-digit', year:'numeric'})}</p>
             </div>
-            <p className="text-xs text-slate-400">Ngày in: {new Date().toLocaleDateString('vi-VN')}</p>
-          </div>
-        </div>
-
-        {/* Info Grid */}
-        <div className="grid grid-cols-2 gap-8 mb-10">
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Thông tin khách thuê</h4>
-            <div className="space-y-2">
-              <p className="flex justify-between">
-                <span className="text-slate-500 text-sm">Họ và tên:</span>
-                <span className="font-bold text-slate-900">{room.tenantName || 'N/A'}</span>
-              </p>
-              <p className="flex justify-between">
-                <span className="text-slate-500 text-sm">Số điện thoại:</span>
-                <span className="font-bold text-slate-900">{room.tenantPhone || 'N/A'}</span>
-              </p>
-              <p className="flex justify-between">
-                <span className="text-slate-500 text-sm">CCCD/CMND:</span>
-                <span className="font-bold text-slate-900">{room.tenantId || 'N/A'}</span>
-              </p>
-            </div>
-          </div>
-          <div className="bg-blue-50/30 p-4 rounded-xl border border-blue-100/50">
-            <h4 className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-3">Thông tin thanh toán</h4>
-            <div className="space-y-2">
-              <p className="flex justify-between">
-                <span className="text-slate-500 text-sm">Kỳ thanh toán:</span>
-                <span className="font-semibold text-slate-900">{getMonthYearString(currentMonth, currentYear)}</span>
-              </p>
-              <p className="flex justify-between">
-                <span className="text-slate-500 text-sm">Trạng thái:</span>
-                <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold uppercase">Chưa thanh toán</span>
-              </p>
+            <div className="text-right">
+              <div className="bg-white/15 backdrop-blur-sm border border-white/30 rounded-2xl px-5 py-3 inline-block mb-2">
+                <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-0.5">Phòng</p>
+                <p className="text-white text-2xl font-black">{room.name}</p>
+              </div>
+              <div className="mt-2">
+                {record.isPaid
+                  ? <span className="bg-emerald-400/30 border border-emerald-300/50 text-emerald-100 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">✓ Đã thanh toán</span>
+                  : <span className="bg-amber-400/30 border border-amber-300/50 text-amber-100 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">⏳ Chưa thanh toán</span>
+                }
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Table */}
-        <div className="overflow-hidden rounded-xl border border-slate-200 mb-8">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-slate-800 text-white">
-                <th className="p-3 text-left text-xs font-bold uppercase tracking-wider">Hạng mục</th>
-                <th className="p-3 text-center text-xs font-bold uppercase tracking-wider">Chỉ số</th>
-                <th className="p-3 text-center text-xs font-bold uppercase tracking-wider">Tiêu thụ</th>
-                <th className="p-3 text-right text-xs font-bold uppercase tracking-wider">Đơn giá</th>
-                <th className="p-3 text-right text-xs font-bold uppercase tracking-wider">Thành tiền</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              <tr className="bg-white">
-                <td className="p-4">
-                  <div className="font-bold text-slate-900">Tiền thuê phòng</div>
-                  <div className="text-[10px] text-slate-400 italic">Giá cố định hàng tháng</div>
-                </td>
-                <td className="p-4 text-center text-slate-400">-</td>
-                <td className="p-4 text-center text-slate-400">-</td>
-                <td className="p-4 text-right font-medium">{formatCurrency(record.rent)}</td>
-                <td className="p-4 text-right font-bold text-slate-900">{formatCurrency(record.rent)}</td>
-              </tr>
-              <tr className="bg-slate-50/50">
-                <td className="p-4">
-                  <div className="font-bold text-slate-900">Tiền điện</div>
-                  <div className="text-[10px] text-slate-400 italic">Dựa trên chỉ số công tơ</div>
-                </td>
-                <td className="p-4 text-center">
-                  <div className="text-xs font-medium text-slate-500">
-                    {record.elecOld.toLocaleString('vi-VN')} <span className="text-blue-400">→</span> {record.elecNew.toLocaleString('vi-VN')}
+        {/* ===== BODY ===== */}
+        <div className="p-8">
+
+          {/* Info Grid */}
+          <div className="grid grid-cols-2 gap-5 mb-8">
+            <div className="border border-slate-100 rounded-2xl p-5 bg-slate-50/60">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-7 h-7 rounded-lg bg-blue-100 flex items-center justify-center text-sm">👤</div>
+                <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Khách thuê</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400 text-xs">Họ và tên</span>
+                  <span className="font-bold text-slate-800 text-sm">{room.tenantName || '—'}</span>
+                </div>
+                <div className="w-full h-px bg-slate-100"></div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400 text-xs">Điện thoại</span>
+                  <span className="font-semibold text-slate-700 text-sm">{room.tenantPhone || '—'}</span>
+                </div>
+                <div className="w-full h-px bg-slate-100"></div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400 text-xs">CCCD / CMND</span>
+                  <span className="font-semibold text-slate-700 text-sm">{room.tenantId || '—'}</span>
+                </div>
+              </div>
+            </div>
+            <div className="border border-blue-100 rounded-2xl p-5 bg-blue-50/40">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-7 h-7 rounded-lg bg-blue-200 flex items-center justify-center text-sm">📋</div>
+                <h4 className="text-[10px] font-black text-blue-500 uppercase tracking-widest">Thông tin kỳ thu</h4>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400 text-xs">Kỳ thanh toán</span>
+                  <span className="font-bold text-slate-800 text-sm">{getMonthYearString(currentMonth, currentYear)}</span>
+                </div>
+                <div className="w-full h-px bg-blue-100"></div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400 text-xs">Hạn thanh toán</span>
+                  <span className="font-bold text-red-500 text-sm">Trước ngày 10</span>
+                </div>
+                <div className="w-full h-px bg-blue-100"></div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400 text-xs">Trạng thái</span>
+                  {record.isPaid
+                    ? <span className="text-[10px] bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full font-black uppercase">✓ Đã thanh toán</span>
+                    : <span className="text-[10px] bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full font-black uppercase">Chưa thanh toán</span>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ===== ITEMS TABLE ===== */}
+          <div className="rounded-2xl overflow-hidden border border-slate-200 mb-6">
+            {/* Table Header */}
+            <div className="grid grid-cols-[2fr_2fr_1fr_1.2fr_1.2fr] bg-slate-800 text-white text-[10px] font-black uppercase tracking-widest">
+              <div className="px-4 py-3">Hạng mục</div>
+              <div className="px-4 py-3 text-center">Chỉ số</div>
+              <div className="px-4 py-3 text-center">Tiêu thụ</div>
+              <div className="px-4 py-3 text-right">Đơn giá</div>
+              <div className="px-4 py-3 text-right">Thành tiền</div>
+            </div>
+
+            {/* Row: Tiền thuê */}
+            <div className="grid grid-cols-[2fr_2fr_1fr_1.2fr_1.2fr] border-b border-slate-100 bg-white items-center">
+              <div className="px-4 py-3.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">🏠</span>
+                  <div>
+                    <div className="font-bold text-slate-800 text-sm">Tiền thuê phòng</div>
+                    <div className="text-[10px] text-slate-400">Giá cố định hàng tháng</div>
                   </div>
-                </td>
-                <td className="p-4 text-center">
-                  <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold text-xs">
-                    {elecUsage.toLocaleString('vi-VN')} kWh
-                  </span>
-                </td>
-                <td className="p-4 text-right text-slate-600 text-sm">{formatCurrency(record.elecPrice)}</td>
-                <td className="p-4 text-right font-bold text-slate-900">{formatCurrency(elecUsage * record.elecPrice)}</td>
-              </tr>
-              <tr className="bg-white">
-                <td className="p-4">
-                  <div className="font-bold text-slate-900">Tiền nước</div>
-                  <div className="text-[10px] text-slate-400 italic">Dựa trên chỉ số đồng hồ</div>
-                </td>
-                <td className="p-4 text-center">
-                  <div className="text-xs font-medium text-slate-500">
-                    {record.waterOld.toLocaleString('vi-VN')} <span className="text-cyan-400">→</span> {record.waterNew.toLocaleString('vi-VN')}
+                </div>
+              </div>
+              <div className="px-4 py-3.5 text-center text-slate-300 text-lg">—</div>
+              <div className="px-4 py-3.5 text-center text-slate-300 text-lg">—</div>
+              <div className="px-4 py-3.5 text-right text-slate-500 text-sm">{formatCurrency(record.rent)}</div>
+              <div className="px-4 py-3.5 text-right font-black text-slate-900">{formatCurrency(record.rent)}</div>
+            </div>
+
+            {/* Row: Điện */}
+            <div className="grid grid-cols-[2fr_2fr_1fr_1.2fr_1.2fr] border-b border-slate-100 bg-blue-50/30 items-center">
+              <div className="px-4 py-3.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xs">⚡</span>
+                  <div>
+                    <div className="font-bold text-slate-800 text-sm">Tiền điện</div>
+                    <div className="text-[10px] text-slate-400">Chỉ số công tơ điện</div>
                   </div>
-                </td>
-                <td className="p-4 text-center">
-                  <span className="bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded font-bold text-xs">
-                    {waterUsage.toLocaleString('vi-VN')} m³
-                  </span>
-                </td>
-                <td className="p-4 text-right text-slate-600 text-sm">{formatCurrency(record.waterPrice)}</td>
-                <td className="p-4 text-right font-bold text-slate-900">{formatCurrency(waterUsage * record.waterPrice)}</td>
-              </tr>
-              <tr className="bg-slate-50/50">
-                <td className="p-4">
-                  <div className="font-bold text-slate-900">Phí vệ sinh & Rác</div>
-                </td>
-                <td className="p-4 text-center text-slate-400">-</td>
-                <td className="p-4 text-center text-slate-400">-</td>
-                <td className="p-4 text-right text-slate-600 text-sm">{formatCurrency(record.trash)}</td>
-                <td className="p-4 text-right font-bold text-slate-900">{formatCurrency(record.trash)}</td>
-              </tr>
-              <tr className="bg-white">
-                <td className="p-4">
-                  <div className="font-bold text-slate-900">Internet / Wifi</div>
-                </td>
-                <td className="p-4 text-center text-slate-400">-</td>
-                <td className="p-4 text-center text-slate-400">-</td>
-                <td className="p-4 text-right text-slate-600 text-sm">{formatCurrency(record.internet)}</td>
-                <td className="p-4 text-right font-bold text-slate-900">{formatCurrency(record.internet)}</td>
-              </tr>
-              {record.debt !== 0 && (
-                <tr className="bg-red-50/30">
-                  <td className="p-4">
-                    <div className="font-bold text-red-700">Nợ cũ / Phát sinh</div>
-                    {record.notes && <div className="text-[10px] text-red-400 italic">{record.notes}</div>}
-                  </td>
-                  <td className="p-4 text-center text-slate-400">-</td>
-                  <td className="p-4 text-center text-slate-400">-</td>
-                  <td className="p-4 text-right text-red-600 text-sm">{formatCurrency(record.debt)}</td>
-                  <td className="p-4 text-right font-bold text-red-700">{formatCurrency(record.debt)}</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                </div>
+              </div>
+              <div className="px-4 py-3.5 text-center">
+                <span className="text-xs text-slate-500 bg-white px-2 py-1 rounded-lg border border-blue-100">
+                  {record.elecOld.toLocaleString('vi-VN')} <span className="text-blue-400 font-bold">→</span> {record.elecNew.toLocaleString('vi-VN')}
+                </span>
+              </div>
+              <div className="px-4 py-3.5 text-center">
+                <span className="bg-blue-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full">
+                  {elecUsage.toLocaleString('vi-VN')} kWh
+                </span>
+              </div>
+              <div className="px-4 py-3.5 text-right text-blue-600 text-xs font-semibold">{formatCurrency(record.elecPrice)}/kWh</div>
+              <div className="px-4 py-3.5 text-right font-black text-blue-700">{formatCurrency(elecUsage * record.elecPrice)}</div>
+            </div>
 
-        {/* Total Summary */}
-        <div className="flex justify-end mb-12">
-          <div className="w-72 bg-slate-800 text-white p-6 rounded-2xl shadow-xl transform rotate-1">
-            <div className="flex justify-between items-center mb-2 opacity-70">
-              <span className="text-xs font-bold uppercase tracking-widest">Tổng cộng</span>
+            {/* Row: Nước */}
+            <div className="grid grid-cols-[2fr_2fr_1fr_1.2fr_1.2fr] border-b border-slate-100 bg-white items-center">
+              <div className="px-4 py-3.5">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center text-xs">💧</span>
+                  <div>
+                    <div className="font-bold text-slate-800 text-sm">Tiền nước</div>
+                    <div className="text-[10px] text-slate-400">Chỉ số đồng hồ nước</div>
+                  </div>
+                </div>
+              </div>
+              <div className="px-4 py-3.5 text-center">
+                <span className="text-xs text-slate-500 bg-white px-2 py-1 rounded-lg border border-cyan-100">
+                  {record.waterOld.toLocaleString('vi-VN')} <span className="text-cyan-400 font-bold">→</span> {record.waterNew.toLocaleString('vi-VN')}
+                </span>
+              </div>
+              <div className="px-4 py-3.5 text-center">
+                <span className="bg-cyan-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full">
+                  {waterUsage.toLocaleString('vi-VN')} m³
+                </span>
+              </div>
+              <div className="px-4 py-3.5 text-right text-cyan-600 text-xs font-semibold">{formatCurrency(record.waterPrice)}/m³</div>
+              <div className="px-4 py-3.5 text-right font-black text-cyan-700">{formatCurrency(waterUsage * record.waterPrice)}</div>
             </div>
-            <div className="text-3xl font-black tracking-tighter">
-              {formatCurrency(total)}
-            </div>
-            <div className="mt-4 pt-4 border-t border-white/10 text-[10px] italic opacity-60">
-              Vui lòng thanh toán trước ngày 05 hàng tháng. Xin cảm ơn!
-            </div>
-          </div>
-        </div>
 
-        {/* Signatures */}
-        <div className="grid grid-cols-2 gap-8 mt-16 pb-10">
-          <div className="text-center">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-16">Người thuê phòng</p>
-            <div className="w-40 h-px bg-slate-200 mx-auto mb-2"></div>
-            <p className="font-bold text-slate-900">{room.tenantName || '................................'}</p>
+            {/* Row: Rác */}
+            {record.trash > 0 && (
+              <div className="grid grid-cols-[2fr_2fr_1fr_1.2fr_1.2fr] border-b border-slate-100 bg-orange-50/20 items-center">
+                <div className="px-4 py-3.5">
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-lg bg-orange-100 text-orange-500 flex items-center justify-center text-xs">🗑️</span>
+                    <div className="font-bold text-slate-800 text-sm">Phí vệ sinh &amp; Rác</div>
+                  </div>
+                </div>
+                <div className="px-4 py-3.5 text-center text-slate-300">—</div>
+                <div className="px-4 py-3.5 text-center text-slate-300">—</div>
+                <div className="px-4 py-3.5 text-right text-slate-500 text-sm">{formatCurrency(record.trash)}</div>
+                <div className="px-4 py-3.5 text-right font-black text-slate-900">{formatCurrency(record.trash)}</div>
+              </div>
+            )}
+
+            {/* Row: Internet */}
+            {record.internet > 0 && (
+              <div className="grid grid-cols-[2fr_2fr_1fr_1.2fr_1.2fr] border-b border-slate-100 bg-white items-center">
+                <div className="px-4 py-3.5">
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-lg bg-violet-100 text-violet-500 flex items-center justify-center text-xs">📶</span>
+                    <div className="font-bold text-slate-800 text-sm">Internet / Wifi</div>
+                  </div>
+                </div>
+                <div className="px-4 py-3.5 text-center text-slate-300">—</div>
+                <div className="px-4 py-3.5 text-center text-slate-300">—</div>
+                <div className="px-4 py-3.5 text-right text-slate-500 text-sm">{formatCurrency(record.internet)}</div>
+                <div className="px-4 py-3.5 text-right font-black text-slate-900">{formatCurrency(record.internet)}</div>
+              </div>
+            )}
+
+            {/* Row: Nợ */}
+            {record.debt !== 0 && (
+              <div className="grid grid-cols-[2fr_2fr_1fr_1.2fr_1.2fr] bg-red-50/40 items-center">
+                <div className="px-4 py-3.5">
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-lg bg-red-100 text-red-500 flex items-center justify-center text-xs">⚠️</span>
+                    <div>
+                      <div className="font-bold text-red-700 text-sm">Nợ cũ / Phát sinh</div>
+                      {record.notes && <div className="text-[10px] text-red-400 italic">{record.notes}</div>}
+                    </div>
+                  </div>
+                </div>
+                <div className="px-4 py-3.5 text-center text-slate-300">—</div>
+                <div className="px-4 py-3.5 text-center text-slate-300">—</div>
+                <div className="px-4 py-3.5 text-right text-red-500 text-sm">{formatCurrency(record.debt)}</div>
+                <div className="px-4 py-3.5 text-right font-black text-red-700">{formatCurrency(record.debt)}</div>
+              </div>
+            )}
           </div>
-          <div className="text-center">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-16">Chủ nhà / Đại diện</p>
-            <div className="w-40 h-px bg-slate-200 mx-auto mb-2"></div>
-            <p className="font-bold text-slate-900">Trần Phương Thái</p>
+
+          {/* ===== TOTAL SECTION ===== */}
+          <div className="flex justify-end mb-10">
+            <div className="w-80 rounded-2xl overflow-hidden shadow-lg">
+              {/* Sub-totals */}
+              <div className="bg-slate-50 px-5 py-3 space-y-2 border border-slate-200 rounded-t-2xl">
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500">Tiền thuê</span>
+                  <span className="font-semibold text-slate-700">{formatCurrency(record.rent)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500">⚡ Điện ({elecUsage} kWh)</span>
+                  <span className="font-semibold text-blue-600">{formatCurrency(elecUsage * record.elecPrice)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500">💧 Nước ({waterUsage} m³)</span>
+                  <span className="font-semibold text-cyan-600">{formatCurrency(waterUsage * record.waterPrice)}</span>
+                </div>
+                {record.trash > 0 && <div className="flex justify-between text-sm"><span className="text-slate-500">Phụ thu khác</span><span className="font-semibold text-slate-700">{formatCurrency(record.trash + record.internet)}</span></div>}
+                {record.debt !== 0 && <div className="flex justify-between text-sm"><span className="text-red-400">Nợ / Phát sinh</span><span className="font-bold text-red-600">{formatCurrency(record.debt)}</span></div>}
+              </div>
+              {/* Grand total */}
+              <div className="bg-gradient-to-r from-blue-700 to-indigo-700 px-5 py-4 flex justify-between items-center">
+                <div>
+                  <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest">Tổng thanh toán</p>
+                  <p className="text-white/80 text-xs mt-0.5">Vui lòng trả trước ngày 10</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-white text-2xl font-black">{formatCurrency(total)}</p>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {/* ===== NOTE ===== */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-8 flex items-start gap-2">
+            <span className="text-amber-500 text-sm mt-0.5">💡</span>
+            <p className="text-amber-700 text-xs leading-relaxed">
+              Vui lòng thanh toán đúng hạn trước ngày <strong>10 hàng tháng</strong>. Nếu có thắc mắc, liên hệ chủ nhà <strong>Trần Phương Thái</strong> để được hỗ trợ. Xin cảm ơn!
+            </p>
+          </div>
+
+          {/* ===== SIGNATURES ===== */}
+          <div className="grid grid-cols-2 gap-12 pt-2">
+            <div className="text-center">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-14">Người thuê phòng</p>
+              <div className="w-48 h-px bg-slate-200 mx-auto mb-2"></div>
+              <p className="font-bold text-slate-700 text-sm">{room.tenantName || '..............................'}</p>
+              <p className="text-slate-400 text-xs mt-0.5">(Ký và ghi rõ họ tên)</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-14">Chủ nhà / Đại diện</p>
+              <div className="w-48 h-px bg-slate-200 mx-auto mb-2"></div>
+              <p className="font-bold text-slate-700 text-sm">Trần Phương Thái</p>
+              <p className="text-slate-400 text-xs mt-0.5">(Ký và ghi rõ họ tên)</p>
+            </div>
+          </div>
+
         </div>
       </div>
     );
   };
 
+
   return (
-    <div className="min-h-screen bg-[#F5F5F7] text-[#1D1D1F] font-sans selection:bg-blue-100">
-      {/* --- Sidebar / Header --- */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50/30 to-slate-100 text-[#1D1D1F] font-sans selection:bg-blue-100">
+      {/* --- Header --- */}
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-white/60 shadow-sm">
         <div className="max-w-[1600px] mx-auto px-4 md:px-6 py-3 md:h-16 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
           <div className="flex items-center gap-3 w-full md:w-auto">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-sm shrink-0">
-              <Home size={24} />
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center text-white shadow-md shrink-0">
+              <Home size={22} />
             </div>
             <div className="flex-1">
-              <h1 className="font-bold text-lg leading-tight">Trần Phương Thái</h1>
-              <p className="text-[10px] md:text-xs text-gray-500 font-medium uppercase tracking-wider">Hệ thống quản lý thông minh</p>
+              <h1 className="font-extrabold text-lg leading-tight bg-gradient-to-r from-blue-700 to-blue-500 bg-clip-text text-transparent">Trần Phương Thái</h1>
+              <p className="text-[10px] md:text-xs text-gray-400 font-semibold uppercase tracking-widest">Hệ thống quản lý thông minh</p>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 md:gap-4 w-full md:w-auto">
-            <div className="flex items-center gap-2 bg-blue-50 px-2 md:px-3 py-1.5 rounded-lg border border-blue-100">
-              <span className="text-[9px] md:text-[10px] font-bold text-blue-600 uppercase">Điện</span>
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 md:gap-3 w-full md:w-auto">
+            <div className="flex items-center gap-1.5 bg-gradient-to-r from-blue-50 to-blue-100/60 px-2.5 py-1.5 rounded-xl border border-blue-200/70 shadow-sm">
+              <span className="text-[9px] md:text-[10px] font-black text-blue-600 uppercase tracking-wider">⚡ Điện</span>
               <input 
                 type="text" 
                 value={formatNumberForInput(globalElecPrice)} 
                 onChange={(e) => handleUpdateGlobalPrice('elec', parseSafeNumber(e.target.value))}
-                className="w-12 md:w-16 bg-transparent font-bold text-blue-700 outline-none text-xs md:text-sm"
+                className="w-14 md:w-18 bg-transparent font-bold text-blue-700 outline-none text-xs md:text-sm"
               />
-              <span className="text-[9px] md:text-[10px] text-blue-400">đ</span>
+              <span className="text-[9px] md:text-[10px] text-blue-400 font-medium">đ/kWh</span>
             </div>
-            <div className="flex items-center gap-2 bg-cyan-50 px-2 md:px-3 py-1.5 rounded-lg border border-cyan-100">
-              <span className="text-[9px] md:text-[10px] font-bold text-cyan-600 uppercase">Nước</span>
+            <div className="flex items-center gap-1.5 bg-gradient-to-r from-cyan-50 to-cyan-100/60 px-2.5 py-1.5 rounded-xl border border-cyan-200/70 shadow-sm">
+              <span className="text-[9px] md:text-[10px] font-black text-cyan-600 uppercase tracking-wider">💧 Nước</span>
               <input 
                 type="text" 
                 value={formatNumberForInput(globalWaterPrice)} 
                 onChange={(e) => handleUpdateGlobalPrice('water', parseSafeNumber(e.target.value))}
-                className="w-12 md:w-16 bg-transparent font-bold text-cyan-700 outline-none text-xs md:text-sm"
+                className="w-14 md:w-18 bg-transparent font-bold text-cyan-700 outline-none text-xs md:text-sm"
               />
-              <span className="text-[9px] md:text-[10px] text-cyan-400">đ</span>
+              <span className="text-[9px] md:text-[10px] text-cyan-400 font-medium">đ/m³</span>
             </div>
 
             <button 
               onClick={handleSyncFromPreviousMonth}
-              className="flex items-center gap-2 text-blue-600 px-3 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors border border-blue-100 text-xs md:text-sm"
+              className="flex items-center gap-1.5 text-blue-600 px-3 py-2 rounded-xl font-semibold hover:bg-blue-50 active:scale-95 transition-all border border-blue-200/70 text-xs md:text-sm shadow-sm"
               title="Đồng bộ chỉ số từ tháng trước"
             >
-              <RefreshCcw size={16} className="md:w-[18px] md:h-[18px]" />
+              <RefreshCcw size={14} className="md:w-4 md:h-4" />
               <span className="hidden sm:inline">Đồng bộ</span>
             </button>
 
@@ -923,49 +1025,49 @@ export default function App() {
                     : h
                 ));
               }}
-              className="flex items-center gap-2 text-emerald-600 px-3 py-2 rounded-lg font-medium hover:bg-emerald-50 transition-colors border border-emerald-100 text-xs md:text-sm"
+              className="flex items-center gap-1.5 text-emerald-600 px-3 py-2 rounded-xl font-semibold hover:bg-emerald-50 active:scale-95 transition-all border border-emerald-200/70 text-xs md:text-sm shadow-sm"
               title="Đánh dấu tất cả phòng đã thanh toán"
             >
-              <DollarSign size={16} className="md:w-[18px] md:h-[18px]" />
+              <DollarSign size={14} className="md:w-4 md:h-4" />
               <span className="hidden sm:inline">Tất cả đã trả</span>
             </button>
 
-            <div className="flex items-center bg-gray-100 rounded-lg p-1">
+            <div className="flex items-center bg-gray-100/80 backdrop-blur-sm rounded-xl p-1 border border-gray-200/60 shadow-sm">
               <button 
                 onClick={() => navigateMonth('prev')}
-                className="p-1 md:p-1.5 hover:bg-white hover:shadow-sm rounded-md transition-all"
+                className="p-1 md:p-1.5 hover:bg-white hover:shadow-md rounded-lg transition-all active:scale-90"
               >
-                <ChevronLeft size={18} className="md:w-5 md:h-5" />
+                <ChevronLeft size={16} className="md:w-[18px] md:h-[18px]" />
               </button>
-              <div className="px-2 md:px-4 py-1 flex items-center gap-1 md:gap-2 font-semibold min-w-[100px] md:min-w-[140px] justify-center text-xs md:text-sm">
-                <Calendar size={14} className="text-blue-600 md:w-4 md:h-4" />
+              <div className="px-2 md:px-3 py-1 flex items-center gap-1 md:gap-1.5 font-bold min-w-[96px] md:min-w-[130px] justify-center text-xs md:text-sm text-gray-700">
+                <Calendar size={13} className="text-blue-500 md:w-[15px] md:h-[15px]" />
                 {getMonthYearString(currentMonth, currentYear)}
               </div>
               <button 
                 onClick={() => navigateMonth('next')}
-                className="p-1 md:p-1.5 hover:bg-white hover:shadow-sm rounded-md transition-all"
+                className="p-1 md:p-1.5 hover:bg-white hover:shadow-md rounded-lg transition-all active:scale-90"
               >
-                <ChevronRight size={18} className="md:w-5 md:h-5" />
+                <ChevronRight size={16} className="md:w-[18px] md:h-[18px]" />
               </button>
             </div>
 
             <button 
               onClick={handleSaveAll}
               disabled={isSaving || !isSupabaseConfigured}
-              className={`flex items-center gap-2 px-3 md:px-4 py-2 rounded-lg font-medium transition-all shadow-sm text-xs md:text-sm ${
+              className={`flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl font-bold transition-all shadow-md active:scale-95 text-xs md:text-sm ${
                 saveStatus === 'success' 
-                  ? 'bg-green-600 text-white' 
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white' 
                   : saveStatus === 'error'
-                  ? 'bg-red-600 text-white'
-                  : 'bg-emerald-600 text-white hover:bg-emerald-700'
-              } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  ? 'bg-gradient-to-r from-red-500 to-red-600 text-white'
+                  : 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700'
+              } disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none`}
             >
               {isSaving ? (
-                <div className="w-3 h-3 md:w-4 md:h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               ) : (
-                <Save size={16} className="md:w-[18px] md:h-[18px]" />
+                <Save size={14} className="md:w-4 md:h-4" />
               )}
-              <span>{saveStatus === 'success' ? 'Đã lưu' : saveStatus === 'error' ? 'Lỗi!' : 'Lưu'}</span>
+              <span>{saveStatus === 'success' ? '✓ Đã lưu' : saveStatus === 'error' ? '✗ Lỗi!' : 'Lưu'}</span>
             </button>
 
             <button 
@@ -973,10 +1075,10 @@ export default function App() {
                 setEditingRoom(null);
                 setIsRoomModalOpen(true);
               }}
-              className="flex items-center gap-2 bg-blue-600 text-white px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm text-xs md:text-sm"
+              className="flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-3 md:px-4 py-2 rounded-xl font-bold hover:from-blue-700 hover:to-blue-600 active:scale-95 transition-all shadow-md text-xs md:text-sm"
             >
-              <Plus size={16} className="md:w-[18px] md:h-[18px]" />
-              <span>Thêm</span>
+              <Plus size={14} className="md:w-4 md:h-4" />
+              <span>Thêm phòng</span>
             </button>
           </div>
         </div>
@@ -1001,55 +1103,65 @@ export default function App() {
         )}
 
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-64 gap-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-            <p className="text-gray-500 font-medium">Đang tải dữ liệu từ Supabase...</p>
+          <div className="flex flex-col items-center justify-center h-72 gap-5">
+            <div className="relative w-16 h-16">
+              <div className="absolute inset-0 rounded-full border-4 border-blue-100"></div>
+              <div className="absolute inset-0 rounded-full border-4 border-t-blue-600 border-r-blue-400 border-b-transparent border-l-transparent animate-spin"></div>
+              <div className="absolute inset-3 rounded-full border-2 border-t-transparent border-l-transparent border-blue-300 animate-spin" style={{animationDirection: 'reverse', animationDuration: '0.7s'}}></div>
+            </div>
+            <div className="text-center">
+              <p className="text-gray-600 font-semibold">Đang tải dữ liệu...</p>
+              <p className="text-gray-400 text-sm mt-1">Kết nối Supabase</p>
+            </div>
           </div>
         ) : (
           <>
             {/* --- Stats Overview --- */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
-                <Home size={24} />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8">
+          <div className="group bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 to-blue-100/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative flex items-center gap-3 md:gap-4">
+              <div className="w-11 h-11 md:w-12 md:h-12 bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                <Home size={22} />
               </div>
               <div>
-                <p className="text-sm text-gray-500 font-medium">Tổng số phòng</p>
-                <h3 className="text-2xl font-bold">{stats.totalRooms}</h3>
+                <p className="text-xs md:text-sm text-gray-500 font-medium">Tổng số phòng</p>
+                <h3 className="text-2xl md:text-3xl font-black text-gray-800">{stats.totalRooms}</h3>
               </div>
             </div>
           </div>
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
-                <Users size={24} />
+          <div className="group bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/0 to-emerald-100/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative flex items-center gap-3 md:gap-4">
+              <div className="w-11 h-11 md:w-12 md:h-12 bg-gradient-to-br from-emerald-100 to-emerald-200 text-emerald-600 rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                <Users size={22} />
               </div>
               <div>
-                <p className="text-sm text-gray-500 font-medium">Đang thuê</p>
-                <h3 className="text-2xl font-bold">{stats.occupiedRooms}</h3>
+                <p className="text-xs md:text-sm text-gray-500 font-medium">Đang thuê</p>
+                <h3 className="text-2xl md:text-3xl font-black text-gray-800">{stats.occupiedRooms}</h3>
               </div>
             </div>
           </div>
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
-                <Trash2 size={24} />
+          <div className="group bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-50/0 to-orange-100/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative flex items-center gap-3 md:gap-4">
+              <div className="w-11 h-11 md:w-12 md:h-12 bg-gradient-to-br from-orange-100 to-orange-200 text-orange-500 rounded-2xl flex items-center justify-center shadow-sm shrink-0">
+                <FileText size={22} />
               </div>
               <div>
-                <p className="text-sm text-gray-500 font-medium">Phòng trống</p>
-                <h3 className="text-2xl font-bold">{stats.vacantRooms}</h3>
+                <p className="text-xs md:text-sm text-gray-500 font-medium">Phòng trống</p>
+                <h3 className="text-2xl md:text-3xl font-black text-gray-800">{stats.vacantRooms}</h3>
               </div>
             </div>
           </div>
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
-                <DollarSign size={24} />
+          <div className="group bg-gradient-to-br from-purple-600 to-indigo-700 p-5 md:p-6 rounded-2xl shadow-md border border-purple-500/30 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 col-span-2 md:col-span-1">
+            <div className="flex items-center gap-3 md:gap-4">
+              <div className="w-11 h-11 md:w-12 md:h-12 bg-white/20 text-white rounded-2xl flex items-center justify-center shrink-0">
+                <DollarSign size={22} />
               </div>
               <div>
-                <p className="text-sm text-gray-500 font-medium">Doanh thu tháng</p>
-                <h3 className="text-2xl font-bold text-purple-600">{formatCurrency(stats.totalRevenue)}</h3>
+                <p className="text-xs md:text-sm text-purple-200 font-medium">Doanh thu tháng</p>
+                <h3 className="text-lg md:text-2xl font-black text-white leading-tight">{formatCurrency(stats.totalRevenue)}</h3>
               </div>
             </div>
           </div>
@@ -1060,30 +1172,31 @@ export default function App() {
           <div className="overflow-x-auto">
             <table className="min-w-full border-collapse text-[11px] md:text-sm">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="p-2 md:p-4 text-left font-bold text-gray-700 sticky left-0 bg-gray-50 z-10 w-24 md:w-32 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">Phòng</th>
-                  <th colSpan={4} className="p-1 md:p-2 text-center font-bold text-blue-700 bg-blue-50/50 border-x border-gray-200">Điện</th>
-                  <th colSpan={4} className="p-1 md:p-2 text-center font-bold text-cyan-700 bg-cyan-50/50 border-x border-gray-200">Nước</th>
-                  <th colSpan={4} className="p-1 md:p-2 text-center font-bold text-emerald-700 bg-emerald-50/50 border-x border-gray-200">Cố định</th>
-                  <th className="p-2 md:p-4 text-right font-bold text-purple-700 bg-purple-50/50 border-x border-gray-200">Tổng</th>
-                  <th className="p-2 md:p-4 text-center font-bold text-gray-700 border-x border-gray-200">T.Thái</th>
-                  <th className="p-2 md:p-4 text-left font-bold text-gray-700">Khách</th>
-                  <th className="p-2 md:p-4 text-center font-bold text-gray-700">#</th>
+                <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200">
+                  <th className="p-2 md:p-4 text-left font-bold text-gray-700 sticky left-0 bg-gray-50 z-10 w-24 md:w-32 shadow-[3px_0_6px_-2px_rgba(0,0,0,0.08)]">Phòng</th>
+                  <th className="p-1.5 md:p-2.5 text-center font-extrabold text-emerald-700 bg-emerald-50 border-x border-emerald-200 tracking-wide whitespace-nowrap">💰 Tiền thuê</th>
+                  <th colSpan={4} className="p-1.5 md:p-2.5 text-center font-extrabold text-blue-700 bg-blue-50 border-x border-blue-100 tracking-wide">⚡ Điện</th>
+                  <th colSpan={4} className="p-1.5 md:p-2.5 text-center font-extrabold text-cyan-700 bg-cyan-50 border-x border-cyan-100 tracking-wide">💧 Nước</th>
+                  <th colSpan={3} className="p-1.5 md:p-2.5 text-center font-extrabold text-orange-700 bg-orange-50 border-x border-orange-100 tracking-wide">� Phụ thu</th>
+                  <th className="p-2 md:p-4 text-right font-extrabold text-purple-700 bg-purple-50 border-x border-purple-100">Tổng</th>
+                  <th className="p-2 md:p-4 text-center font-bold text-gray-600 border-x border-gray-200">T.Thái</th>
+                  <th className="p-2 md:p-4 text-left font-bold text-gray-600">Khách thuê</th>
+                  <th className="p-2 md:p-4 text-center font-bold text-gray-600">Thao tác</th>
                 </tr>
                 <tr className="bg-gray-50 border-b border-gray-200 text-[9px] md:text-[10px] uppercase tracking-wider text-gray-500">
-                  <th className="p-1 md:p-2 sticky left-0 bg-gray-50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]"></th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Cũ</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Mới</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[40px] md:w-16 whitespace-nowrap">Dùng</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[70px] md:w-28 whitespace-nowrap">Tiền</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Cũ</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Mới</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[40px] md:w-16 whitespace-nowrap">Dùng</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[70px] md:w-28 whitespace-nowrap">Tiền</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[80px] md:w-32 whitespace-nowrap">Phòng</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Rác</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Net</th>
-                  <th className="p-1 md:p-2 border-x border-gray-100 min-w-[60px] md:w-24 whitespace-nowrap">Nợ</th>
+                  <th className="p-1 md:p-2 sticky left-0 bg-gray-50 z-10 shadow-[3px_0_6px_-2px_rgba(0,0,0,0.08)]"></th>
+                  <th className="p-1 md:p-2 border-x border-emerald-200 min-w-[80px] md:w-32 whitespace-nowrap bg-emerald-50/60 text-emerald-700 font-black">Số tiền</th>
+                  <th className="p-1 md:p-2 border-x border-blue-100 min-w-[60px] md:w-24 whitespace-nowrap bg-blue-50/40 text-blue-500">Cũ</th>
+                  <th className="p-1 md:p-2 border-x border-blue-100 min-w-[60px] md:w-24 whitespace-nowrap bg-blue-50/40 text-blue-500">Mới</th>
+                  <th className="p-1 md:p-2 border-x border-blue-100 min-w-[40px] md:w-16 whitespace-nowrap bg-blue-50/60 text-blue-600">Dùng</th>
+                  <th className="p-1 md:p-2 border-x border-blue-100 min-w-[70px] md:w-28 whitespace-nowrap bg-blue-50/60 text-blue-600">Tiền</th>
+                  <th className="p-1 md:p-2 border-x border-cyan-100 min-w-[60px] md:w-24 whitespace-nowrap bg-cyan-50/40 text-cyan-500">Cũ</th>
+                  <th className="p-1 md:p-2 border-x border-cyan-100 min-w-[60px] md:w-24 whitespace-nowrap bg-cyan-50/40 text-cyan-500">Mới</th>
+                  <th className="p-1 md:p-2 border-x border-cyan-100 min-w-[40px] md:w-16 whitespace-nowrap bg-cyan-50/60 text-cyan-600">Dùng</th>
+                  <th className="p-1 md:p-2 border-x border-cyan-100 min-w-[70px] md:w-28 whitespace-nowrap bg-cyan-50/60 text-cyan-600">Tiền</th>
+                  <th className="p-1 md:p-2 border-x border-orange-100 min-w-[60px] md:w-24 whitespace-nowrap bg-orange-50/40 text-orange-500">Rác</th>
+                  <th className="p-1 md:p-2 border-x border-orange-100 min-w-[60px] md:w-24 whitespace-nowrap bg-orange-50/40 text-orange-500">Net</th>
+                  <th className="p-1 md:p-2 border-x border-red-100 min-w-[60px] md:w-24 whitespace-nowrap bg-red-50/30 text-red-400">Nợ</th>
                   <th className="p-1 md:p-2 border-x border-gray-100"></th>
                   <th className="p-1 md:p-2 border-x border-gray-100"></th>
                   <th className="p-1 md:p-2 border-x border-gray-100">Họ tên</th>
@@ -1098,12 +1211,25 @@ export default function App() {
                   const total = calculateTotal(record);
 
                   return (
-                    <tr key={room.id} className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors group">
-                      <td className="p-2 md:p-4 font-bold sticky left-0 bg-white group-hover:bg-gray-50/50 z-10 border-r border-gray-100 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
-                        <div className="flex flex-col">
-                          <span className="truncate">{room.name}</span>
-                          {!room.isOccupied && <span className="text-[9px] md:text-[10px] text-orange-500 font-normal">Trống</span>}
+                    <tr key={room.id} className="border-b border-gray-100 hover:bg-blue-50/20 transition-colors duration-150 group">
+                      <td className="p-2 md:p-4 font-bold sticky left-0 bg-white group-hover:bg-blue-50/20 z-10 border-r border-gray-200 shadow-[3px_0_6px_-2px_rgba(0,0,0,0.08)]">
+                        <div className="flex flex-col gap-0.5">
+                          <span className="truncate text-gray-800">{room.name}</span>
+                          {!room.isOccupied 
+                            ? <span className="text-[9px] md:text-[10px] bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded-md font-semibold w-fit">Trống</span>
+                            : <span className="text-[9px] md:text-[10px] bg-emerald-100 text-emerald-600 px-1.5 py-0.5 rounded-md font-semibold w-fit">Có người</span>
+                          }
                         </div>
+                      </td>
+
+                      {/* Tiền thuê phòng - ngay sau cột tên phòng */}
+                      <td className="p-0.5 border-x border-emerald-200 min-w-[80px] bg-emerald-50/30">
+                        <input 
+                          type="text" 
+                          value={formatNumberForInput(record.rent)} 
+                          onChange={(e) => handleUpdateRecord(room.id, 'rent', parseSafeNumber(e.target.value))}
+                          className="w-full p-1 md:p-2 bg-transparent text-right font-bold text-emerald-700 focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all text-[10px] md:text-sm"
+                        />
                       </td>
                       
                       {/* Điện */}
@@ -1154,15 +1280,7 @@ export default function App() {
                         {formatCurrency(waterUsage * record.waterPrice).replace('₫', '')}
                       </td>
 
-                      {/* Chi phí */}
-                      <td className="p-0.5 border-x border-gray-100 min-w-[80px]">
-                        <input 
-                          type="text" 
-                          value={formatNumberForInput(record.rent)} 
-                          onChange={(e) => handleUpdateRecord(room.id, 'rent', parseSafeNumber(e.target.value))}
-                          className="w-full p-1 md:p-2 bg-transparent text-right focus:bg-white focus:ring-1 focus:ring-emerald-400 outline-none rounded transition-all text-[10px] md:text-sm"
-                        />
-                      </td>
+                      {/* Phụ thu: Rác, Net */}
                       <td className="p-0.5 border-x border-gray-100 min-w-[60px]">
                         <input 
                           type="text" 
@@ -1196,13 +1314,13 @@ export default function App() {
                       <td className="p-2 md:p-4 text-center border-x border-gray-100">
                         <button
                           onClick={() => handleUpdateRecord(room.id, 'isPaid', !record.isPaid)}
-                          className={`px-2 md:px-3 py-1 rounded-full text-[8px] md:text-[10px] font-bold uppercase tracking-wider transition-all ${
+                          className={`px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-xl text-[9px] md:text-[10px] font-extrabold uppercase tracking-wider transition-all active:scale-95 shadow-sm ${
                             record.isPaid 
-                              ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' 
-                              : 'bg-red-100 text-red-700 border border-red-200'
+                              ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 text-white shadow-emerald-200' 
+                              : 'bg-gradient-to-r from-red-400 to-rose-500 text-white shadow-red-200'
                           }`}
                         >
-                          {record.isPaid ? 'X' : '!'}
+                          {record.isPaid ? '✓ Xong' : '✗ Chưa'}
                         </button>
                       </td>
 
@@ -1251,21 +1369,22 @@ export default function App() {
                 })}
               </tbody>
               <tfoot>
-                <tr className="bg-gray-50 font-bold border-t-2 border-gray-200">
-                  <td className="p-2 md:p-4 sticky left-0 bg-gray-50 z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">TỔNG</td>
-                  <td colSpan={4} className="p-2 md:p-4 text-right text-blue-700 text-[10px] md:text-sm border-x border-gray-100">
-                    {formatCurrency(stats.totalElec).replace('₫', '')}
-                  </td>
-                  <td colSpan={4} className="p-2 md:p-4 text-right text-cyan-700 text-[10px] md:text-sm border-x border-gray-100">
-                    {formatCurrency(stats.totalWater).replace('₫', '')}
-                  </td>
-                  <td colSpan={4} className="p-2 md:p-4 text-right text-emerald-700 text-[10px] md:text-sm border-x border-gray-100">
+                <tr className="bg-gradient-to-r from-gray-50 to-gray-100 font-bold border-t-2 border-gray-300">
+                  <td className="p-2 md:p-4 sticky left-0 bg-gray-100 z-10 shadow-[3px_0_6px_-2px_rgba(0,0,0,0.08)] text-gray-700 font-black uppercase text-xs tracking-wider">Tổng</td>
+                  <td className="p-2 md:p-4 text-right text-emerald-700 font-bold text-[10px] md:text-sm border-x border-emerald-200 bg-emerald-50/50">
                     {formatCurrency(stats.totalRent).replace('₫', '')}
                   </td>
-                  <td className="p-2 md:p-4 text-right text-purple-700 text-sm md:text-lg bg-purple-50/40">
+                  <td colSpan={4} className="p-2 md:p-4 text-right text-blue-700 font-bold text-[10px] md:text-sm border-x border-blue-100 bg-blue-50/40">
+                    {formatCurrency(stats.totalElec).replace('₫', '')}
+                  </td>
+                  <td colSpan={4} className="p-2 md:p-4 text-right text-cyan-700 font-bold text-[10px] md:text-sm border-x border-cyan-100 bg-cyan-50/40">
+                    {formatCurrency(stats.totalWater).replace('₫', '')}
+                  </td>
+                  <td colSpan={3} className="p-2 md:p-4 bg-orange-50/30 border-x border-orange-100"></td>
+                  <td className="p-2 md:p-4 text-right text-white text-xs md:text-base bg-gradient-to-r from-purple-600 to-indigo-600 font-black rounded-none">
                     {formatCurrency(stats.totalRevenue).replace('₫', '')}
                   </td>
-                  <td colSpan={3}></td>
+                  <td colSpan={3} className="bg-gray-50/60"></td>
                 </tr>
               </tfoot>
             </table>
@@ -1292,10 +1411,13 @@ export default function App() {
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10 mx-auto"
             >
-              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
-                <h3 className="font-bold text-lg">{editingRoom?.id ? 'Chỉnh sửa phòng' : 'Thêm phòng mới'}</h3>
-                <button onClick={() => setIsRoomModalOpen(false)} className="p-1 hover:bg-gray-200 rounded-full transition-colors">
-                  <X size={20} />
+              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-gray-50 to-blue-50/30">
+                <div>
+                  <h3 className="font-extrabold text-lg text-gray-800">{editingRoom?.id ? '✏️ Chỉnh sửa phòng' : '➕ Thêm phòng mới'}</h3>
+                  <p className="text-xs text-gray-400 mt-0.5">{editingRoom?.id ? `Cập nhật thông tin ${editingRoom.name}` : 'Điền thông tin phòng mới'}</p>
+                </div>
+                <button onClick={() => setIsRoomModalOpen(false)} className="p-1.5 hover:bg-gray-200/80 rounded-xl transition-colors text-gray-500 hover:text-gray-700">
+                  <X size={18} />
                 </button>
               </div>
               <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
@@ -1503,19 +1625,22 @@ export default function App() {
               exit={{ scale: 0.9, opacity: 0 }}
               className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl overflow-hidden relative z-10 mx-auto"
             >
-              <div className="px-4 md:px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4 no-print">
-                <h3 className="font-bold text-lg">Xem trước hóa đơn</h3>
+              <div className="px-4 md:px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4 no-print bg-gradient-to-r from-gray-50 to-blue-50/30">
+                <div>
+                  <h3 className="font-extrabold text-lg text-gray-800">🧾 Xem trước hóa đơn</h3>
+                  <p className="text-xs text-gray-400 mt-0.5">Kiểm tra trước khi in hoặc chụp ảnh</p>
+                </div>
                 <div className="flex flex-wrap items-center justify-center gap-2">
                   <button 
                     onClick={handleCaptureInvoice}
-                    className="flex items-center gap-2 bg-emerald-600 text-white px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors text-xs md:text-sm"
+                    className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 md:px-4 py-2 rounded-xl font-semibold hover:from-emerald-600 hover:to-emerald-700 active:scale-95 transition-all shadow-md text-xs md:text-sm"
                   >
                     <Camera size={16} className="md:w-[18px] md:h-[18px]" />
                     Chụp Ảnh
                   </button>
                   <button 
                     onClick={() => window.print()}
-                    className="flex items-center gap-2 bg-blue-600 text-white px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors text-xs md:text-sm"
+                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-3 md:px-4 py-2 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-600 active:scale-95 transition-all shadow-md text-xs md:text-sm"
                   >
                     <Printer size={16} className="md:w-[18px] md:h-[18px]" />
                     In Hóa Đơn
